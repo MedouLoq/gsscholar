@@ -1,0 +1,22 @@
+{% extends "index.html" %}
+{% block content %}
+
+<div class="container">
+        <h1 class="mt-5 mb-4">Matier List</h1>
+        
+        {% for Matier in matier_list %}
+            <div class="card mb-3">
+                <div class="card-body">
+                    <h5 class="card-title">
+                        <a href="{% url 'commentaires' Matier.code %}" >
+                    {{ Matier.name }} - {{ Matier.code }}
+                </a>
+                    </h5>
+                    <a class="btn btn-outline-success " style="float: right !important;" href="{% url 'commentaires_download' Matier.code %}">Download</a>
+                </div>
+               
+            </div>
+        {% endfor %}
+    </div>
+
+{% endblock  %}

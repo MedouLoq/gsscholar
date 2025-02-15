@@ -1,0 +1,16 @@
+{% extends 'index.html' %}
+{% load static %}
+
+{% block content %}
+
+
+<!-- section_confirm_delete.html -->
+<h2>Confirm Deletion</h2>
+<p>Are you sure you want to delete "{{ section.name }}"?</p>
+<form method="post" action="{% url 'section_delete' pk=section.pk %}">
+    {% csrf_token %}
+    <input type="submit" value="Delete">
+</form>
+<a href="{% url 'section_list' %}">Cancel</a>
+
+{% endblock content %}

@@ -1,0 +1,41 @@
+{% extends "index.html" %}
+{% block content %}
+
+<div class="container">
+    <h1 class="mt-5 mb-4">Liste des Semesters </h1>
+
+    {% for semester in semester_list %}
+    <div class="card mb-3">
+        <div class="card-body">
+            <h5 class="card-title">
+                <a href="{% url 'students_not_filled_questionnaire' semester.id %}">
+                    {{ semester.nom_semestre }}
+                </a>
+            </h5>
+            <a class="btn btn-outline-success " style="float: right !important;"
+                href="{% url 'students_not_filled_pdf' semester.id %}">Download</a>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+
+        var myDiv = document.getElementById('1');
+        var myDiv2 = document.getElementById('4');
+
+
+        if (myDiv.classList.contains('active')) {
+
+            myDiv.classList.remove('active');
+
+
+
+            myDiv2.classList.add('active');
+
+
+        }
+    });
+</script>
+</script>
+{% endblock %}

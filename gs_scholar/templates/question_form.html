@@ -1,0 +1,15 @@
+{% extends 'index.html' %}
+{% load static %}
+
+{% block content %}
+
+
+<!-- question_form.html -->
+<h2>{% if question %}Update Question{% else %}Create Question{% endif %}</h2>
+<form method="post"
+    action="{% if question %}{% url 'question_update' pk=question.pk %}{% else %}{% url 'question_create' %}{% endif %}">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <input type="submit" value="Save">
+</form>
+{% endblock content %}

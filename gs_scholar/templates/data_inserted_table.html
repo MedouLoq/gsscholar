@@ -1,0 +1,36 @@
+{% extends 'index.html' %}
+{% load static %}
+
+{% block content %}
+
+<div class="container mt-5">
+    <h2>Data Inserted Table</h2>
+    <table class="table" id="fh">
+        <thead>
+            <tr>
+                <th>Questionnaire</th>
+                <th>Matier Code</th>
+                <th>Question</th>
+                <th>Section</th>
+                <th>Weight</th>
+                <th>Selected Choice</th>
+
+            </tr>
+        </thead>
+        <tbody>
+            {% for data_object in data_objects %}
+            <tr>
+                <td>{{ data_object.questionnaire }}</td>
+                <td>{{ data_object.matier_code }}</td>
+                <td>{{ data_object.question.text }}</td>
+                <td>{{ data_object.section.name }}</td>
+                <td>{{ data_object.weight }}</td>
+                <td>{{ data_object.selected_choice }}</td>
+
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+{% endblock content %}

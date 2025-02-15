@@ -1,0 +1,113 @@
+{% extends 'index.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container mt-4">
+
+    <h4>Ajouter un Questionnaire</h4>
+    <form method="post" action="{% url 'add_questionnaire' %}" class="mb-3">
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="name">Nom:</label>
+            <input type="text" name="name" class="form-control" required>
+        </div>
+        <div class="form-group">
+            <label for="description">Description:</label>
+            <textarea name="description" class="form-control" required></textarea>
+        </div>
+        <div class="form-group">
+            <label for="Semestre">Semestre:</label>
+            <select id='semesterDropdown' name="semester" class="form-control" required>
+                <option value="" data-semester-id="">-- Select Semester --</option>
+                {% for semestere in semesters %}
+                    <option value="{{ semestere.id }}">{{ semestere.nom_semestre }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="professor">Professeur:</label>
+            <select name="professor" class="form-control" required>
+                {% for professor in professors %}
+                    <option value="{{ professor.id }}">{{ professor.Nom_du_Prof }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="form-group">
+    <label for="matier">Matière:</label>
+    <select id="matierDropdown" name="matier" class="form-control" required>
+        <option value="" data-semester-id="">-- Select Matier --</option>
+        {% for matier in matiers %}
+            <option value="{{ matier.id }}" data-semester-id="{{ matier.semester.id }}">
+                {{ matier.name }}
+            </option>
+        {% endfor %}
+    </select>
+</div>
+
+        
+        <div class="form-group">
+            <label>Sections:</label>
+            <div class="form-check">
+        <input type="checkbox" id="select-all-sections" class="form-check-input"> 
+        <label class="form-check-label" for="select-all-sections">Select All</label><br> <br>
+    </div>
+            {% for section in sections %}
+                <div class="form-check">
+                    <input type="checkbox" name="sections" value="{{ section.id }}" class="form-check-input">
+                    <label class="form-check-label">{{ section.name }}</label>
+                </div>
+            {% endfor %}
+        </div>
+        <!-- Add other form fields as needed -->
+        <button type="submit" class="btn btn-primary">Enregistrer</button>
+    </form>
+
+    <a href="{% url 'questionnaire_table' %}" class="btn btn-secondary">Retour à la liste des questionnaires</a>
+</div>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var selectAllCheckbox = document.getElementById('select-all-sections');
+        var sectionCheckboxes = document.querySelectorAll('[name="sections"]');
+
+        selectAllCheckbox.addEventListener('change', function () {
+            sectionCheckboxes.forEach(function (checkbox) {
+                checkbox.checked = selectAllCheckbox.checked;
+            });
+        });
+
+        sectionCheckboxes.forEach(function (checkbox) {
+            checkbox.addEventListener('change', function () {
+                selectAllCheckbox.checked = sectionCheckboxes.length === document.querySelectorAll('[name="sections"]:checked').length;
+            });
+        });
+    });
+</script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var semesterDropdown = document.getElementById('semesterDropdown');
+        var matierDropdown = document.getElementById('matierDropdown');
+
+        semesterDropdown.addEventListener('change', function () {
+            var selectedSemesterId = semesterDropdown.value;
+
+            // Clear existing options
+            matierDropdown.innerHTML = '<option value="" data-semester-id="">-- Select Matier --</option>';
+
+            // Fetch Matiers for the selected semester using AJAX
+            if (selectedSemesterId) {
+                fetch(`/get_matiers_for_semester/${selectedSemesterId}/`)
+                    .then(response => response.json())
+                    .then(data => {
+                        data.forEach(matier => {
+                            var option = document.createElement('option');
+                            option.value = matier.id;
+                            option.setAttribute('data-semester-id', selectedSemesterId);
+                            option.textContent = matier.name;
+                            matierDropdown.appendChild(option);
+                        });
+                    });
+            }
+        });
+    });
+</script>
+{% endblock content %}

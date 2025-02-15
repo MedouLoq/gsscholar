@@ -1,0 +1,558 @@
+{%load static%}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
+    <title>Admin Dashboard</title>
+    <link rel="shortcut icon" href="{% static 'isms.png' %}">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,400;0,500;0,700;0,900;1,400;1,500;1,700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'plugins/bootstrap/css/bootstrap.min.css'%}">
+    <link rel="stylesheet" href="{% static 'plugins/feather/feather.css'%}">
+    <link rel="stylesheet" href="{% static 'plugins/icons/flags/flags.css'%}">
+    <link rel="stylesheet" href="{% static 'plugins/fontawesome/css/fontawesome.min.css'%}">
+    <link rel="stylesheet" href="{% static 'plugins/fontawesome/css/all.min.css'%}">
+    <link rel="stylesheet" href="{% static 'css/style.css'%}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+        integrity="sha512-...">
+                         <style>
+    .countdown-container {
+        text-align: center;
+        margin-top: 20px;
+    }
+
+    #countdown {
+        font-size: 13px;
+        color: #333;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 152px;
+    }
+
+    .countdown-item {
+        margin: 0 10px;
+    }
+
+    .countdown-number {
+        font-size: 35px;
+        font-weight: 600;
+    }
+
+    .countdown-label {
+        font-size: 12px;
+        font-weight: 700;
+        letter-spacing: 2px;
+    }
+
+    .card-container {
+        margin-top: 30px;
+    }
+
+    .card {
+        border: none;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .card-header {
+        background-color: #5cb85c;
+        color: #fff;
+        border-radius: 10px 10px 0 0;
+    }
+
+    .btn-confirm {
+        background-color: #5cb85c;
+        color: #fff;
+    }
+
+    .btn-confirm:hover {
+        background-color: #4cae4c;
+    }
+
+    .btn-expired {
+        background-color: #d9534f;
+        color: #fff;
+    }
+
+    .btn-expired:hover {
+        background-color: #c9302c;
+    }
+
+    /* Dark mode styles */
+    .dark-mode .countdown-container {
+        background: #24292D;
+    }
+
+    .dark-mode .card {
+        background: #323840;
+    }
+
+    .dark-mode .card-header {
+        background-color: #323840;
+    }
+
+    .dark-mode .btn-confirm {
+        background-color: #323840;
+    }
+
+    .dark-mode .btn-confirm:hover {
+        background-color: #2a2f33;
+    }
+
+    .dark-mode .btn-expired {
+        background-color: #c9302c;
+    }
+
+    .dark-mode .btn-expired:hover {
+        background-color: #ac2925;
+    }
+</style>
+        <style>
+    /* New School Year Badge Style */
+    .school-year-badge {
+        background: linear-gradient(135deg, #2193b0, #6dd5ed);
+        color: white;
+        padding: 15px 25px;
+        border-radius: 8px;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        display: flex;
+        align-items: center;
+        margin: 0 15px;
+    }
+
+    .school-year-badge i {
+        margin-right: 10px;
+    }
+
+    .school-year-badge h4 {
+        margin: 0;
+        font-size: 1.3rem;
+        font-weight: 500;
+    }
+
+    /* Active Link Styling */
+    .sidebar-menu ul li a.active-link {
+        background-color: #3498db;
+        color: white !important;
+        border-radius: 4px;
+    }
+
+    .sidebar-menu ul li.active > a {
+        color: #3498db;
+    }
+
+    /* Improved submenu active state */
+    .sidebar-menu .submenu.active > a {
+        background-color: rgba(52, 152, 219, 0.1);
+    }
+</style>
+<style>
+
+
+    ul.nav.user-menu > li:first-child, ul.nav.user-menu > li:nth-child(1){
+        background-color: #f0f0f0; /* light grey background */
+        padding: 5px 10px; /* reduced padding */
+        margin-right: 5px; /* reduced margin */
+        border-radius: 5px;
+        align-items: center; /* ensures vertical centering */
+        display: flex; /* uses flexbox for better control over alignment */
+        flex-wrap: wrap; /* allows items to wrap in small spaces */
+    }
+
+    ul.nav.user-menu > li:nth-child(1) {
+        background-color: #e0e0e0; /* slightly darker grey */
+    }
+
+
+</style>
+
+</head>
+
+<body>
+
+    <div class="main-wrapper">
+
+        <div class="header">
+
+            <div class="header-left">
+                <a href="index.html" class="logo">
+                    <img src="{% static 'isms.png' %}" alt="Logo">
+                </a>
+                <a href="index.html" class="logo logo-small">
+                    <img src="{% static 'isms.png' %}" alt="Logo" width="30" height="30">
+                </a>
+            </div>
+            <div class="menu-toggle">
+                <a href="javascript:void(0);" id="toggle_btn">
+                    <i class="fas fa-bars"></i>
+                </a>
+            </div>
+
+            <div class="top-nav-search">
+                <form>
+                    <input type="text" class="form-control" placeholder="Search here">
+                    <button class="btn" type="submit"><i class="fas fa-search"></i></button>
+                </form>
+            </div>
+            <a class="mobile_btn" id="mobile_btn">
+                <i class="fas fa-bars"></i>
+            </a>
+
+            <ul class="nav user-menu">
+    
+        <div class="school-year-badge">
+            <i class="fas fa-calendar-alt"></i>
+            <h4>Année scolaire: {{previous}}-{{current_annee.annee}}</h4>
+        </div>
+    
+
+
+
+                <li class="nav-item dropdown has-arrow new-user-menus">
+                    <a href="#" class="dropdown-toggle nav-link" data-bs-toggle="dropdown">
+                        <span class="user-img">
+                            <img class="rounded-circle" src="{{ user.profile.image.url }}" width="31" alt="Soeng Souy">
+                            <div class="user-text">
+                                <h6>{{ request.user.username }}</h6>
+                                {% if user.is_superuser %}<p class="text-muted mb-0">Administrator</p> {%endif%}
+                            </div>
+                        </span>
+                    </a>
+                    <div class="dropdown-menu">
+                        <div class="user-header">
+                            <div class="avatar avatar-sm">
+                                <img src="{{ user.profile.image.url }}" alt="User Image"
+                                    class="avatar-img rounded-circle">
+                            </div>
+                            <div class="user-text">
+                                <a href="/profile/" class="d-block">{{ request.user.username }}</a>
+                                <p class="text-muted mb-0">Administrator</p>
+                            </div>
+                        </div>
+                        <a class="dropdown-item" href="/profile/">My Profile</a>
+
+                        <a class="dropdown-item" onclick="logout()">Logout</a>
+                    </div>
+                </li>
+
+            </ul>
+
+        </div>
+
+
+<!-- Sidebar Section -->
+<div class="sidebar" id="sidebar">
+    <div class="sidebar-inner slimscroll">
+        <div id="sidebar-menu" class="sidebar-menu">
+            <ul>
+                <li class="menu-title">
+                    <span>Main Menu</span>
+                </li>
+
+                <!-- Dashboard Section -->
+                <li class="submenu {% if request.path == '/' or '/mail_sender' in request.path or '/questionnaire_view/31' in request.path or '/semester_list3' in request.path %}active{% endif %}">
+                    <a href="#"><i class="feather-grid"></i> <span>Dashboard</span> <span class="menu-arrow"></span></a>
+                    {% if not user.is_superuser %}
+                    <ul>
+                        <li><a href="/" class="{% if request.endpoint == 'index' %}active{% endif %}">Profile Etudiant</a></li>
+                    </ul>
+                    {% endif %}
+
+                    {% if user.is_superuser %}
+                    <ul>
+                        <li><a href="/" class="{% if request.path == '/' %}active{% endif %}">Admin Dashboard</a></li>
+                        <li><a href="/mail_sender" class="{% if '/mail_sender' in request.path %}active{% endif %}">Envoyer les formulaires</a></li>
+                        <li><a href="/questionnaire_view/31/" class="{% if '/questionnaire_view/31' in request.path %}active{% endif %}">Voir example de questionnaire</a></li>
+                        <li><a href="/semester_list3" class="{% if '/semester_list3' in request.path %}active{% endif %}">Etudaiants qui n'ont pas remplir</a></li>
+                    </ul>
+                    {% endif %}
+                </li>
+
+                {% if user.is_superuser %}
+                <!-- Students Section -->
+                <li class="submenu {% if '/etudiant_table' in request.path %}active{% endif %}">
+                    <a href="#"><i class="fas fa-graduation-cap"></i> <span>Students</span> <span class="menu-arrow"></span></a>
+                    <ul>
+                        <li><a href="/etudiant_table" class="{% if '/etudiant_table' in request.path %}active{% endif %}">Liste des Etudaiant</a></li>
+                    </ul>
+                </li>
+
+                <!-- Teachers Section -->
+                <li class="submenu {% if '/teachers' in request.path %}active{% endif %}">
+                    <a href="#"><i class="fas fa-chalkboard-teacher"></i> <span>Teachers</span> <span class="menu-arrow"></span></a>
+                    <ul>
+                        <li><a href="teachers.html" class="{% if '/teachers' in request.path %}active{% endif %}">Teacher List</a></li>
+                    </ul>
+                </li>
+
+                <!-- Statistics Section -->
+                <li class="submenu {% if '/semester_list' in request.path or '/semester_graph' in request.path %}active{% endif %}">
+                    <a href="#"><i class="fas fa-chart-pie"></i> <span>Statistic</span> <span class="menu-arrow"></span></a>
+                    <ul>
+                        <li><a href="/semester_list" class="{% if '/semester_list' == request.path %}active{% endif %}">Radar</a></li>
+                        <li><a href="/semester_graph" class="{% if '/semester_graph' in request.path %}active{% endif %}">Barchart</a></li>
+                    </ul>
+                </li>
+
+                <!-- Data Viewing Section -->
+                <li class="submenu {% if '/semester_list4' in request.path or '/data-inserted-table' in request.path %}active{% endif %}">
+                    <a href="#"><i class="fas fa-book-reader"></i> <span>Visionement des donnees</span> <span class="menu-arrow"></span></a>
+                    <ul>
+                        <li><a href="/semester_list4" class="{% if '/semester_list4' in request.path %}active{% endif %}">Explorer les Commentaires</a></li>
+                        <li><a href="/data-inserted-table" class="{% if '/data-inserted-table' in request.path %}active{% endif %}">Afficher la table des donnees</a></li>
+                    </ul>
+                </li>
+
+                <!-- Forms Management Section -->
+                <li class="submenu {% if '/questionnaire_table' in request.path or '/sections' in request.path or '/questions' in request.path or '/emailtables' in request.path %}active{% endif %}">
+                    <a href="#"><i class="fas fa-clipboard"></i> <span>Gestion Formulaires</span> <span class="menu-arrow"></span></a>
+                    <ul>
+                        <li><a href="/questionnaire_table" class="{% if '/questionnaire_table' in request.path %}active{% endif %}">questionnaire table</a></li>
+                        <li><a href="/sections" class="{% if '/sections' in request.path %}active{% endif %}">Table des sections</a></li>
+                        <li><a href="/questions" class="{% if '/questions' in request.path %}active{% endif %}">Table des Questions</a></li>
+                        <li><a href="/emailtables" class="{% if '/emailtables' in request.path %}active{% endif %}">Table des email</a></li>
+                    </ul>
+                </li>
+
+                <!-- School Year Management -->
+                <li class="submenu {% if '/annee_scolaire_table' in request.path %}active{% endif %}">
+                    <a href="#"><i class="fas fa-calendar"></i> <span>Gestion Des annes scolaire</span> <span class="menu-arrow"></span></a>
+                    <ul>
+                        <li><a href="/annee_scolaire_table" class="{% if '/annee_scolaire_table' in request.path %}active{% endif %}">Anne table</a></li>
+                    </ul>
+                </li>
+
+                <!-- Subjects Section -->
+                <li class="submenu {% if '/matier_table' in request.path %}active{% endif %}">
+                    <a href="#"><i class="fas fa-calendar"></i> <span>Matieres</span> <span class="menu-arrow"></span></a>
+                    <ul>
+                        <li><a href="/matier_table" class="{% if '/matier_table' in request.path %}active{% endif %}">Matieres table</a></li>
+                    </ul>
+                </li>
+
+                <!-- Add Administrator -->
+                <li>
+                    <a href="/register" class="nav-item nav-link {% if '/register' in request.path %}active{% endif %}">
+                        <i class="fa fa-user me-2"></i>AJouter un adminstarteur
+                    </a>
+                </li>
+                {% endif %}
+            </ul>
+
+            {% if not user.is_superuser %}
+            <!-- Countdown Timer for non-admin users -->
+            <div class="countdown-container">
+                <div id="countdown">
+                    <div class="countdown-item">
+                        <div class="countdown-number" id="countdown-day"></div>
+                        <div class="countdown-label">Days</div>
+                    </div>
+                    <div class="countdown-item">
+                        <div class="countdown-number" id="countdown-hour"></div>
+                        <div class="countdown-label">Hours</div>
+                    </div>
+                    <div class="countdown-item">
+                        <div class="countdown-number" id="countdown-minute"></div>
+                        <div class="countdown-label">Minutes</div>
+                    </div>
+                    <div class="countdown-item">
+                        <div class="countdown-number" id="countdown-second"></div>
+                        <div class="countdown-label">Seconds</div>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<style>
+/* Active state styling */
+.sidebar-menu ul li a.active {
+    background-color: #3498db;
+    color: #fff !important;
+    border-radius: 4px;
+}
+
+.sidebar-menu .submenu.active > a {
+    background-color: rgba(52, 152, 219, 0.1);
+    color: #3498db !important;
+}
+
+.sidebar-menu ul li a:hover {
+    background-color: rgba(52, 152, 219, 0.1);
+    color: #3498db;
+}
+
+/* Submenu styling */
+.sidebar-menu .submenu ul {
+    padding-left: 15px;
+}
+
+.sidebar-menu .submenu ul li a {
+    padding: 7px 15px;
+    display: block;
+    position: relative;
+}
+
+/* Menu arrow animation */
+.menu-arrow {
+    transition: transform 0.3s;
+}
+
+.submenu.active > a .menu-arrow {
+    transform: rotate(90deg);
+}
+</style>
+
+        <div class="page-wrapper">
+            <div class="content container-fluid">
+
+                <div class="page-header">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="page-sub-header">
+                                <h3 class="page-title"></h3>
+                                <ul class="breadcrumb">
+
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    {% block content %}{% endblock %}
+                </div>
+
+                <footer>
+                    <p>Copyright © ISMS-Developers_Team </p>
+                </footer>
+            </div>
+        </div>
+{% block extra_js %}{% endblock %}
+        <script src="{% static 'js/jquery-3.6.0.min.js'%}"></script>
+        <script src="{% static 'plugins/bootstrap/js/bootstrap.bundle.min.js'%}"></script>
+        <script src="{% static 'js/feather.min.js'%}"></script>
+        <script src="{% static 'plugins/slimscroll/jquery.slimscroll.min.js'%}"></script>
+        <script src="{% static 'plugins/apexchart/apexcharts.min.js'%}"></script>
+        <script src="{% static 'plugins/apexchart/chart-data.js'%}"></script>
+        <script src="{% static 'js/script.js'%}"></script>
+
+  <script>
+    // Optionally initialize DataTables here
+    $(document).ready(function() { $('.table').DataTable(); });
+  </script>
+
+        <!-- JavaScript -->
+        <script src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
+        <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.3/css/jquery.dataTables.min.css">
+                    <script>
+             document.addEventListener('DOMContentLoaded', function () {
+                    fetchDynamicExpirationTimes();
+                });
+
+                function fetchDynamicExpirationTimes() {
+                    fetch('{% url "mail_sender_json" %}', {
+                        method: 'GET',  // Assuming this is a GET request now
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRFToken': '{{ csrf_token }}',
+                        },
+                    })
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.expiration_time) {
+                                console.log('Fetched expiration time:', data.expiration_time, 'for', data.semester_type, 'semester');
+                                updateCountdown(new Date(data.expiration_time).getTime());
+                            } else {
+                                console.error('Error fetching expiration time:', data.error);
+                                document.getElementById('countdown').innerHTML = 'Temps Expirés';
+                                 document.getElementById('countdown').innerHTML = 'Temps Expirés';
+                            }
+                        })
+                        .catch(error => console.error('Error fetching data:', error));
+
+                }
+
+                function updateCountdown(expirationTime) {
+                    // Clear any existing countdown interval
+                    if (window.countdownInterval) {
+                        clearInterval(window.countdownInterval);
+                    }
+
+                    // Update the countdown every second
+                    window.countdownInterval = setInterval(function () {
+                        var now = new Date().getTime();
+                        var distance = expirationTime - now;
+
+                        document.getElementById('countdown-day').innerHTML = Math.floor(distance / (1000 * 60 * 60 * 24));
+                        document.getElementById('countdown-hour').innerHTML = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                        document.getElementById('countdown-minute').innerHTML = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                        document.getElementById('countdown-second').innerHTML = Math.floor((distance % (1000 * 60)) / 1000);
+
+
+                        // Handle countdown expiration
+                        if (distance < 0) {
+                            clearInterval(window.countdownInterval);
+                            document.getElementById('countdown').innerHTML = 'Temps Expirés';
+                             document.getElementById('countdown').innerHTML = 'Temps Expirés';
+                        }
+                    }, 1000);
+                }
+
+        </script>
+        <script>
+
+            new DataTable('#fh');
+        </script>
+        <script>
+            function logout() {
+                // Create a form element
+                var form = document.createElement('form');
+                form.method = 'POST';
+                form.action = '{% url "logout" %}';
+
+                // Add CSRF token input
+                var csrfInput = document.createElement('input');
+                csrfInput.type = 'hidden';
+                csrfInput.name = 'csrfmiddlewaretoken';
+                csrfInput.value = '{{ csrf_token }}';
+                form.appendChild(csrfInput);
+
+                // Append the form to the document and submit it
+                document.body.appendChild(form);
+                form.submit();
+            }
+        </script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Active link handling
+        const currentPath = window.location.pathname;
+        const menuItems = document.querySelectorAll('.sidebar-menu a');
+        
+        menuItems.forEach(item => {
+            if (item.getAttribute('href') === currentPath) {
+                item.classList.add('active-link');
+                // Highlight parent submenu
+                const submenu = item.closest('.submenu');
+                if (submenu) {
+                    submenu.classList.add('active');
+                }
+            }
+        });
+
+        // Handle submenu toggles
+        const submenuToggles = document.querySelectorAll('.submenu > a');
+        submenuToggles.forEach(toggle => {
+            toggle.addEventListener('click', function(e) {
+                const submenu = this.parentElement;
+                submenu.classList.toggle('active');
+            });
+        });
+    });
+</script>
+</body>
+
+</html>

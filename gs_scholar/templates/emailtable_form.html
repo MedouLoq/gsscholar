@@ -1,0 +1,15 @@
+{% extends 'index.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container">
+    <h2>{% if email %}Edit Email{% else %}Add Email{% endif %}</h2>
+    <form method="post"
+        action="{% if email %}{% url 'emailtable_update' pk=email.pk %}{% else %}{% url 'emailtable_create' %}{% endif %}">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-success">Save</button>
+        <a href="{% url 'emailtable_list' %}" class="btn btn-secondary">Cancel</a>
+    </form>
+</div>
+{% endblock %}

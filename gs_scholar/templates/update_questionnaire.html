@@ -1,0 +1,97 @@
+{% extends 'index.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container mt-4">
+
+    <h4>Modifier le Questionnaire</h4>
+    <form method="post" action="{% url 'update_questionnaire' questionnaire.pk %}" class="mb-3">
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="name">Nom:</label>
+            <input type="text" name="name" class="form-control" value="{{ questionnaire.name }}" required>
+        </div>
+        <div class="form-group">
+            <label for="description">Description:</label>
+            <textarea name="description" class="form-control" required>{{ questionnaire.description }}</textarea>
+        </div>
+        <div class="form-group">
+            <label for="Semestre">Semestre:</label>
+            <select id="semesterDropdown" name="semester" class="form-control" required>
+                
+                {% for semestere in semesters %}
+                    <option value="{{ semestere.id }}" {% if semestere.id == questionnaire.semester.id %}selected{% endif %}>
+                        {{ semestere.nom_semestre }}
+                    </option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="professor">Professeur:</label>
+            <select name="professor" class="form-control" required>
+                {% for professor in professors %}
+                    <option value="{{ professor.id }}" {% if professor.id == questionnaire.professor.id %}selected{% endif %}>
+                        {{ professor.Nom_du_Prof }}
+                    </option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="matier">Matière:</label>
+            <select id="matierDropdown" name="matier" class="form-control" required>
+                <!-- Options will be dynamically updated based on the selected semester -->
+            </select>
+        </div>
+        <div class="form-group">
+            <label>Sections:</label>
+            {% for section in sections %}
+                <div class="form-check">
+                    <input type="checkbox" name="sections" value="{{ section.id }}" class="form-check-input" {% if section in questionnaire.sections.all %}checked{% endif %}>
+                    <label class="form-check-label">{{ section.name }}</label>
+                </div>
+            {% endfor %}
+        </div>
+        <!-- Add other form fields as needed -->
+        <button type="submit" class="btn btn-primary">Enregistrer</button>
+    </form>
+
+    <a href="{% url 'questionnaire_table' %}" class="btn btn-secondary">Retour à la liste des questionnaires</a>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var semesterDropdown = document.getElementById('semesterDropdown');
+        var matierDropdown = document.getElementById('matierDropdown');
+
+        semesterDropdown.addEventListener('change', function () {
+            var selectedSemesterId = semesterDropdown.value;
+
+            // Clear existing options
+            matierDropdown.innerHTML = '<option value="" data-semester-id="">-- Select Matier --</option>';
+
+            // Fetch Matiers for the selected semester using AJAX
+            if (selectedSemesterId) {
+                fetch(`/get_matiers_for_semester/${selectedSemesterId}/`)
+                    .then(response => response.json())
+                    .then(data => {
+                        data.forEach(matier => {
+                            var option = document.createElement('option');
+                            option.value = matier.id;
+                            option.setAttribute('data-semester-id', selectedSemesterId);
+                            option.textContent = matier.name;
+                            matierDropdown.appendChild(option);
+                        });
+
+                        // Set the initial selected value based on the questionnaire.matier.id
+                        matierDropdown.value = '{{ questionnaire.matier.id }}';
+                    });
+            }
+        });
+
+        // Trigger the change event initially to populate Matier dropdown for the selected semester (if any)
+        var event = new Event('change');
+        semesterDropdown.dispatchEvent(event);
+    });
+</script>
+
+{% endblock content %}

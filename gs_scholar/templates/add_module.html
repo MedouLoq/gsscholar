@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container" id="fh">
+  <h4>Add New Promo</h4>
+  <form method="post">
+    {% csrf_token %}
+    <div class="form-group">
+      <label for="year">id:</label>
+      <input type="number" name="id" id="year" class="form-control" required>
+    </div>
+    <div class="form-group">
+      <label for="year">nom prof:</label>
+      <input type="text" name="Nom_du_Prof" id="year" class="form-control" required>
+    </div>
+    <div class="form-group">
+      <label for="year">numero</label>
+      <input type="number" name="numero_tel" id="year" class="form-control" required>
+    </div>
+
+    <div class="form-group">
+      <label for="year">email:</label>
+      <input type="email" name="email" id="year" class="form-control" required>
+    </div>
+    <div class="form-group">
+      <label for="year">specialite:</label>
+      <input type="text" name="specialite" id="year" class="form-control" required>
+    </div>
+
+    <button class="btn btn-primary" type="submit">Submit</button>
+  </form>
+
+</div>
+{% endblock content %}

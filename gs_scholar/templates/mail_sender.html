@@ -1,0 +1,367 @@
+{% extends 'index.html' %}
+{% load static %}
+
+
+
+
+{% block content %}
+<style>
+    .dispatch-dashboard {
+        --countdown-gradient-start: #4f46e5;
+        --countdown-gradient-end: #818cf8;
+        --success-color: #10b981;
+        --danger-color: #ef4444;
+        --card-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        --input-border: #e5e7eb;
+        --input-focus: rgba(79, 70, 229, 0.1);
+    }
+
+    .dispatch-dashboard {
+        max-width: 1200px;
+        margin: 2rem auto;
+        padding: 0 1.5rem;
+    }
+
+    .countdown-widget {
+        background: linear-gradient(135deg, var(--countdown-gradient-start), var(--countdown-gradient-end));
+        border-radius: 1rem;
+        padding: 2.5rem;
+        margin-bottom: 2rem;
+        box-shadow: var(--card-shadow);
+        color: white;
+    }
+
+    .countdown-title {
+        font-size: 1.75rem;
+        font-weight: 600;
+        text-align: center;
+        margin-bottom: 2rem;
+        letter-spacing: 0.025em;
+    }
+
+    .countdown-grid {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(100px, 1fr));
+        gap: 1.5rem;
+        justify-items: center;
+    }
+
+    .countdown-item {
+        background: rgba(255, 255, 255, 0.15);
+        backdrop-filter: blur(8px);
+        padding: 1.25rem;
+        border-radius: 1rem;
+        min-width: 110px;
+        text-align: center;
+        transition: transform 0.2s ease;
+    }
+
+    .countdown-item:hover {
+        transform: translateY(-2px);
+    }
+
+    .countdown-number {
+        font-size: 2.5rem;
+        font-weight: 700;
+        line-height: 1.2;
+        margin-bottom: 0.5rem;
+        font-variant-numeric: tabular-nums;
+    }
+
+    .countdown-label {
+        font-size: 0.875rem;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        opacity: 0.9;
+    }
+
+    .dispatch-card {
+        background: white;
+        border-radius: 1rem;
+        box-shadow: var(--card-shadow);
+        overflow: hidden;
+    }
+
+    .dispatch-card-header {
+        padding: 1.5rem;
+        border-bottom: 1px solid var(--input-border);
+        background: #f8fafc;
+    }
+
+    .dispatch-card-title {
+        font-size: 1.5rem;
+        font-weight: 600;
+        color: #1e293b;
+        text-align: center;
+        margin: 0;
+    }
+
+    .dispatch-card-body {
+        padding: 2rem;
+    }
+
+    .semester-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+        gap: 1rem;
+        margin: 1.5rem 0;
+    }
+
+    .semester-checkbox {
+        position: relative;
+        padding: 1rem;
+        background: #f8fafc;
+        border: 1px solid var(--input-border);
+        border-radius: 0.75rem;
+        cursor: pointer;
+        transition: all 0.2s ease;
+    }
+
+    .semester-checkbox:hover {
+        background: #f1f5f9;
+        border-color: #cbd5e1;
+    }
+
+    .semester-checkbox input[type="checkbox"] {
+        position: absolute;
+        opacity: 0;
+    }
+
+    .semester-checkbox label {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        margin: 0;
+        cursor: pointer;
+    }
+
+    .semester-checkbox label::before {
+        content: '';
+        width: 1.25rem;
+        height: 1.25rem;
+        border: 2px solid #cbd5e1;
+        border-radius: 0.375rem;
+        transition: all 0.2s ease;
+    }
+
+    .semester-checkbox input[type="checkbox"]:checked + label::before {
+        background-color: var(--success-color);
+        border-color: var(--success-color);
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='white'%3E%3Cpath fill-rule='evenodd' d='M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z' clip-rule='evenodd'/%3E%3C/svg%3E");
+    }
+
+    .dispatch-submit {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        padding: 1rem 2rem;
+        background: var(--success-color);
+        color: white;
+        font-weight: 600;
+        border-radius: 0.75rem;
+        border: none;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+    }
+
+    .dispatch-submit:hover {
+        background: #059669;
+        transform: translateY(-1px);
+    }
+
+    .dispatch-submit:active {
+        transform: translateY(0);
+    }
+
+    @media (max-width: 768px) {
+        .countdown-grid {
+            grid-template-columns: repeat(2, 1fr);
+        }
+
+        .countdown-item {
+            min-width: 100%;
+        }
+
+        .countdown-number {
+            font-size: 2rem;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .dispatch-dashboard {
+            padding: 0 1rem;
+        }
+
+        .countdown-title {
+            font-size: 1.5rem;
+        }
+
+        .semester-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+
+    @keyframes pulse {
+        0% { transform: scale(1); }
+        50% { transform: scale(1.02); }
+        100% { transform: scale(1); }
+    }
+
+    .countdown-item.pulse {
+        animation: pulse 1s infinite;
+    }
+</style>
+
+<div class="dispatch-dashboard">
+    <div class="countdown-widget">
+        <h2 class="countdown-title">Temps Restant</h2>
+         <center>
+        <div id="countdown" class="countdown-grid">
+           
+            <div class="countdown-item">
+                <div class="countdown-number" id="countdown-day">00</div>
+                <div class="countdown-label">Jours</div>
+            </div>
+            <div class="countdown-item">
+                <div class="countdown-number" id="countdown-hour">00</div>
+                <div class="countdown-label">Heures</div>
+            </div>
+            <div class="countdown-item">
+                <div class="countdown-number" id="countdown-minute">00</div>
+                <div class="countdown-label">Minutes</div>
+            </div>
+            <div class="countdown-item">
+                <div class="countdown-number" id="countdown-second">00</div>
+                <div class="countdown-label">Secondes</div>
+            </div>
+        </div>
+    </center>
+    </div>
+
+    <div class="dispatch-card">
+        <div class="dispatch-card-header">
+            <h3 class="dispatch-card-title">Dispatch Questionnaires</h3>
+        </div>
+        <div class="dispatch-card-body">
+            <form id="dispatchForm" method="post">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label class="form-label text-lg font-semibold mb-3">Sélectionnez les Semestres:</label>
+                    <div class="semester-grid">
+                        {% for semester in semesters %}
+                            <div class="semester-checkbox">
+                                <input type="checkbox" name="semesters" id="semester{{ semester.id }}" value="{{ semester.id }}">
+                                <label for="semester{{ semester.id }}">{{ semester.nom_semestre }} -- {{ semester.niveau.specialite.code }}</label>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                <div class="form-group">
+            <label class="form-label">Délai d'expiration (heures):</label>
+            <input type="number" name="expiration_hours" class="form-control" min="1" value="24" required>
+          </div>
+          <button type="submit" class="dispatch-submit">
+                    <span>Envoyer les Questionnaires</span>
+                </button>
+        </form>
+            
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    document.getElementById('dispatchForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        const formData = new FormData(this);
+        const data = new URLSearchParams();
+        for (const pair of formData) {
+            data.append(pair[0], pair[1]);
+        }
+        
+        fetch('{% url "send_questionnaire_email" %}', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+                'X-CSRFToken': '{{ csrf_token }}'
+            },
+            body: data.toString()
+        })
+        .then(response => {
+            if (response.ok) {
+                alert('Questionnaires envoyés avec succès!');
+                window.location.reload();
+            } else {
+                throw new Error('Erreur lors de l\'envoi des questionnaires');
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('Une erreur est survenue lors de l\'envoi.');
+        });
+    });
+
+    document.addEventListener('DOMContentLoaded', function() {
+        fetchDynamicExpirationTime();
+    });
+
+    function fetchDynamicExpirationTime() {
+        fetch('{% url "mail_sender_json" %}', {
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': '{{ csrf_token }}'
+            },
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.expiration_time) {
+                updateCountdown(new Date(data.expiration_time).getTime());
+                updateStatusBadges(data.semester_type);
+            } else {
+                document.getElementById('countdown').innerHTML = '<div class="text-center text-xl font-semibold">Temps Expiré</div>';
+            }
+        })
+        .catch(error => {
+            console.error('Error fetching expiration time:', error);
+        });
+    }
+
+    function updateCountdown(expirationTime) {
+            if (window.countdownInterval) {
+                clearInterval(window.countdownInterval);
+            }
+
+            window.countdownInterval = setInterval(function() {
+                const now = new Date().getTime();
+                const distance = expirationTime - now;
+
+                const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+                document.getElementById('countdown-day').innerHTML = days;
+                document.getElementById('countdown-hour').innerHTML = hours;
+                document.getElementById('countdown-minute').innerHTML = minutes;
+                document.getElementById('countdown-second').innerHTML = seconds;
+
+                if (distance < 0) {
+                    clearInterval(window.countdownInterval);
+                    document.getElementById('countdown').innerHTML = '<div class="alert alert-warning">Temps Expiré</div>';
+                }
+            }, 1000);
+        }
+
+    function updateStatusBadges(activeSemesterType) {
+        const badges = document.querySelectorAll('.status-badge');
+        badges.forEach(badge => {
+            badge.className = 'status-badge ' + 
+                (badge.textContent.toLowerCase().includes(activeSemesterType) ? 'status-active' : 'status-expired');
+        });
+    }
+</script>
+{% endblock %}

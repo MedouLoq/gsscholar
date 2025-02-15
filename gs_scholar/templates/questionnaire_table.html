@@ -1,0 +1,51 @@
+{% extends 'index.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container mt-4">
+
+    <h4>Table des questionnaires</h4>
+    <a href="{% url 'add_questionnaire' %}" class="btn btn-primary mb-3">Ajouter un Questionnaire</a>
+    <div class="table-responsive">
+        <table id="fh" class="table table-striped table-bordered" width="100%">
+            <thead>
+                <tr>
+                    <th>Nom</th>
+                    <th>Description</th>
+                    <th>Professeur</th>
+                    <th>Matière</th>
+                    <th>Semestre</th>
+                    <th>Details</th>
+                    <th>Éditer</th>
+                    <th>Supprimer</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for questionnaire in questionnaires %}
+                <tr>
+                    <td>{{ questionnaire.name }}</td>
+                    <td>{{ questionnaire.description }}</td>
+                    <td>{{ questionnaire.professor.Nom_du_Prof }}</td>
+                    <td>{{ questionnaire.matier.name }}</td>
+                    <td>{{ questionnaire.semester.nom_semestre }}</td>
+                    <td>
+                        <a href="{% url 'questionnaire' questionnaire.pk %}" class="fa fa-eye">
+
+                        </a>
+                    </td>
+                    <td>
+                        <a href="{% url 'update_questionnaire' questionnaire.pk %}" class="btn btn-primary btn-xs">
+                            Modifier
+                        </a>
+                    </td>
+                    <td>
+                        <a href="{% url 'delete_questionnaire' questionnaire.pk %}"
+                            class="btn btn-danger btn-sm">Supprimer</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

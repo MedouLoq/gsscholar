@@ -1,0 +1,20 @@
+{% extends "index.html" %}
+{% block content %}
+
+<div class="container">
+    <h1 class="mt-5 mb-4">Liste des Questionnaires</h1>
+
+    {% for questionnaire in questionnaires %}
+    <div class="card mb-3">
+        <div class="card-body">
+            <h5 class="card-title">
+                <a href="{% url 'students_not_filled_questionnaire' questionnaire.id %}">
+                    {{ questionnaire.name }} - {{ questionnaire.matier.code }}
+                </a>
+            </h5>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+{% endblock %}

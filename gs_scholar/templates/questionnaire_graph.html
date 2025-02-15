@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ questionnaire.name }} - {{ matier.code }}</title>
+</head>
+<body>
+    <h1>{{ questionnaire.name }} - {{ matier.code }}</h1>
+    <img id="radarChart" src="{% static plot_filename %}" alt="Radar Chart">
+    
+    <button onclick="downloadRadarChart()">Download Chart</button>
+
+    <script>
+        function downloadRadarChart() {
+            var chartImage = document.getElementById('radarChart');
+            var link = document.createElement('a');
+
+            link.href = chartImage.src;
+            link.download = 'radar_chart.png';
+            link.click();
+        }
+    </script>
+</body>
+</html>

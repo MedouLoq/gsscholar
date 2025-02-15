@@ -1,0 +1,57 @@
+{% extends 'index.html' %}
+
+{% block title %}Commentaires{% endblock %}
+
+{% block content %}
+    <div class="container mt-5">
+        <h1 class="display-4 text-center mb-4">Commentaires</h1>
+
+        {% regroup data by section.name as section_list %}
+
+        {% for section in section_list %}
+            <div class="card border-primary mb-3">
+                <div class="card-header bg-primary text-white">
+                    <h2 class="h4">{{ section.grouper }}</h2>
+                </div>
+                <ul class="list-group list-group-flush">
+                    {% for item in section.list %}
+                        <li class="list-group-item">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <span>{{ item.selected_choice }}</span>
+                                <span class="badge badge-secondary">{{ item.etudiant }}</span>
+                                <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#deleteModal{{ item.id }}">X</button>
+                                <!-- Delete Modal -->
+                                <div class="modal fade" id="deleteModal{{ item.id }}" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="deleteModalLabel">Delete Comment</h5>
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <div class="modal-body">
+                                                Are you sure you want to delete this comment?
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                                                <form action="{% url 'delete_comment' comment_id=item.id id=id %}" method="post">
+                                                    {% csrf_token %}
+                                                    <button type="submit" class="btn btn-danger">Delete</button>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        {% endfor %}
+    </div> <br>
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+
+{% endblock %}

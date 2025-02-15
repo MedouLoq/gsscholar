@@ -1,0 +1,40 @@
+{% extends 'index.html' %}
+{% load static %}
+{% load custom_filters %}
+{% block content %}
+  <h2>Students and Matiers Status</h2>
+
+  <div class="table-responsive">
+    <table class="table table-bordered">
+      <thead>
+        <tr>
+          <th>Student</th>
+          {% for matier in matiers_not_filled %}
+            <th>{{ matier.name }}</th>
+          {% endfor %}
+        </tr>
+      </thead>
+
+      <tbody>
+        {% for student in students_not_filled_questionnaire %}
+          <tr>
+            <td>{{ student.Matricul }}</td>
+            {% for matier in matiers_not_filled %}
+              <td>
+    {% with key=student.pk|stringformat:"s"|add:"_"|add:matier.code %}
+        {% if filled_status|get_value:key %}
+           <img
+                            src="{% static 'Right-Correct-check-in-Green-Icon-Sign-on-transparent-background-PNG.png' %}"
+                            alt="Logo" width="40" height="40">
+        {% else %}
+          En attente
+        {% endif %}
+    {% endwith %}
+</td>
+            {% endfor %}
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+{% endblock %}

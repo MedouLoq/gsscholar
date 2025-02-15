@@ -1,0 +1,223 @@
+{% extends "index.html" %}
+{% block content %}
+<style>
+    body { background-color: #f9fafb; font-family: 'Inter', sans-serif; }
+    .nav-tabs .nav-link.active { background-color: #4f46e5; color: #fff; }
+    .table { background-color: #fff; border-radius: 0.5rem; }
+</style>
+
+<div class="container my-4">
+    <h4 class="mb-4">Table des Etudiants</h4>
+
+    <ul class="nav nav-tabs" id="niveauTab" role="tablist">
+        <li class="nav-item" role="presentation">
+            <button class="nav-link {% if not niveau_filter or niveau_filter == 'L1' %}active{% endif %}" id="l1-tab" data-bs-toggle="tab" data-bs-target="#l1" type="button" role="tab">L1</button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link {% if niveau_filter == 'L2' %}active{% endif %}" id="l2-tab" data-bs-toggle="tab" data-bs-target="#l2" type="button" role="tab">L2</button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link {% if niveau_filter == 'L3' %}active{% endif %}" id="l3-tab" data-bs-toggle="tab" data-bs-target="#l3" type="button" role="tab">L3</button>
+        </li>
+    </ul>
+
+    <div class="tab-content mt-3" id="niveauTabContent">
+        <!-- L1 Tab -->
+        <div class="tab-pane fade {% if not niveau_filter or niveau_filter == 'L1' %}show active{% endif %}" id="l1" role="tabpanel">
+            <div class="mb-2">
+                <a href="{% url 'add_etudiant' %}" class="btn btn-success">Ajouter un Etudiant L1</a>
+                <a href="{% url 'import_etudiants' %}?niveau=L1" class="btn btn-info">Importer L1</a>
+            </div>
+            <div class="table-responsive">
+                <table class="table table-striped table-bordered" id="etudiant_table_l1">
+                    <thead>
+                        <tr>
+                            <th>Matricul</th>
+                            <th>Nom & Prénom</th>
+                            <th>Email</th>
+                            <th>Sexe</th>
+                            <th>Niveau</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for etudiant in etudiants_L1 %}
+                        <tr>
+                            <td>{{ etudiant.Matricul }}</td>
+                            <td>{{ etudiant.nom_etudiant }}</td>
+                            <td>{{ etudiant.email }}</td>
+                            <td>{{ etudiant.sexe }}</td>
+                            <td>{{ etudiant.niveau }}</td>
+                            <td>
+                                <a href="/update_etudiant/{{ etudiant.Matricul }}" class="btn btn-primary btn-sm">Modifier</a>
+                                <a href="/delete_etudiant/{{ etudiant.Matricul }}" class="btn btn-danger btn-sm">Supprimer</a>
+                            </td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="6" class="text-center">Aucun étudiant L1 trouvé.</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- L2 Tab -->
+<div class="tab-pane fade {% if niveau_filter == 'L2' %}show active{% endif %}" id="l2" role="tabpanel">
+    <div class="mb-2 d-flex justify-content-between align-items-center">
+        <div>
+            <a href="{% url 'add_etudiant' %}" class="btn btn-success">Ajouter un Etudiant L2</a>
+            <a href="{% url 'import_etudiants' %}?niveau=L2" class="btn btn-info">Importer L2</a>
+        </div>
+                <!-- Speciality Filter Dropdown for L2 -->
+        <div>
+          <form method="get" class="d-flex">
+            <input type="hidden" name="niveau" value="L2">
+            <select name="specialite" class="form-select me-2" onchange="this.form.submit()">
+              <option value="">Toutes les spécialités</option>
+              {% for sp in specialties_L2 %}
+                <option value="{{ sp.id }}" {% if request.GET.specialite == sp.id|stringformat:"s" %}selected{% endif %}>{{ sp.name }}</option>
+              {% endfor %}
+            </select>
+            <noscript><button type='submit'>Filter</button></noscript>
+          </form>
+        </div>
+    </div>
+    <div class="table-responsive">
+        <table class="table table-striped table-bordered" id="etudiant_table_l2">
+            <thead>
+                <tr>
+                    <th>Matricul</th>
+                    <th>Nom & Prénom</th>
+                    <th>Email</th>
+                    <th>Sexe</th>
+                    <th>Niveau</th>
+                    <th>Specialité</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for etudiant in etudiants_L2 %}
+                <tr>
+                    <td>{{ etudiant.Matricul }}</td>
+                    <td>{{ etudiant.nom_etudiant }}</td>
+                    <td>{{ etudiant.email }}</td>
+                    <td>{{ etudiant.sexe }}</td>
+                    <td>{{ etudiant.niveau }}</td>
+                    <td>{% if etudiant.specialite %}{{ etudiant.specialite }}{% else %}N/A{% endif %}</td>
+                    <td>
+                        <a href="/update_etudiant/{{ etudiant.Matricul }}" class="btn btn-primary btn-sm">Modifier</a>
+                        <a href="/delete_etudiant/{{ etudiant.Matricul }}" class="btn btn-danger btn-sm">Supprimer</a>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="7" class="text-center">Aucun étudiant L2 trouvé.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- L3 Tab -->
+<div class="tab-pane fade {% if niveau_filter == 'L3' %}show active{% endif %}" id="l3" role="tabpanel">
+    <div class="mb-2 d-flex justify-content-between align-items-center">
+        <div>
+            <a href="{% url 'add_etudiant' %}" class="btn btn-success">Ajouter un Etudiant L3</a>
+            <a href="{% url 'import_etudiants' %}?niveau=L3" class="btn btn-info">Importer L3</a>
+        </div>
+               <!-- Speciality Filter Dropdown for L3 -->
+        <div>
+          <form method="get" class="d-flex">
+            <input type="hidden" name="niveau" value="L3">
+            <select name="specialite" class="form-select me-2" onchange="this.form.submit()">
+              <option value="">Toutes les spécialités</option>
+              {% for sp in specialties_L3 %}
+                <option value="{{ sp.id }}" {% if request.GET.specialite == sp.id|stringformat:"s" %}selected{% endif %}>{{ sp.name }}</option>
+              {% endfor %}
+            </select>
+            <noscript><button type='submit'>Filter</button></noscript>
+
+          </form>
+        </div>
+    </div>
+    <div class="table-responsive">
+        <table class="table table-striped table-bordered" id="etudiant_table_l3">
+            <thead>
+                <tr>
+                    <th>Matricul</th>
+                    <th>Nom & Prénom</th>
+                    <th>Email</th>
+                    <th>Sexe</th>
+                    <th>Niveau</th>
+                    <th>Specialité</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for etudiant in etudiants_L3 %}
+                <tr>
+                    <td>{{ etudiant.Matricul }}</td>
+                    <td>{{ etudiant.nom_etudiant }}</td>
+                    <td>{{ etudiant.email }}</td>
+                    <td>{{ etudiant.sexe }}</td>
+                    <td>{{ etudiant.niveau }}</td>
+                    <td>{% if etudiant.specialite %}{{ etudiant.specialite }}{% else %}N/A{% endif %}</td>
+                    <td>
+                        <a href="/update_etudiant/{{ etudiant.Matricul }}" class="btn btn-primary btn-sm">Modifier</a>
+                        <a href="/delete_etudiant/{{ etudiant.Matricul }}" class="btn btn-danger btn-sm">Supprimer</a>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="7" class="text-center">Aucun étudiant L3 trouvé.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>  <!-- Load jQuery first! -->
+<script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
+<script>
+    $(document).ready(function() {
+        // Initialize DataTables for each table, *conditionally* based on tab visibility
+        function initializeDataTable(tableId) {
+          if ($(tableId).length > 0) { // Check if table exists
+            $(tableId).DataTable({
+                // Add DataTables options here, if needed (e.g., for custom sorting)
+            });
+          }
+        }
+
+        // Initial load: initialize visible tab's table
+        initializeDataTable('#etudiant_table_l1');
+        if ($('#l2').hasClass('show')) {
+            initializeDataTable('#etudiant_table_l2');
+        }
+        if ($('#l3').hasClass('show')) {
+           initializeDataTable('#etudiant_table_l3');
+        }
+        // On tab change, initialize the newly visible table (and destroy the old one)
+        $('button[data-bs-toggle="tab"]').on('shown.bs.tab', function (e) {
+            var target = $(e.target).attr("data-bs-target"); // Get target tab id
+            if (target === "#l1") {
+                initializeDataTable('#etudiant_table_l1');
+            } else if (target === "#l2") {
+                initializeDataTable('#etudiant_table_l2');
+            } else if (target === "#l3") {
+                initializeDataTable('#etudiant_table_l3');
+            }
+            //destroy the other datatables
+            $('.dataTable').not(target + ' table').DataTable().destroy();
+        });
+    });
+</script>
+
+{% endblock %}

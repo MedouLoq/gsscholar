@@ -1,0 +1,18 @@
+<!-- section_form.html -->
+
+{% extends 'index.html' %}
+{% load static %}
+
+{% block content %}
+
+
+
+
+<h2>{% if section %}Update Section{% else %}Create Section{% endif %}</h2>
+<form method="post"
+    action="{% if section %}{% url 'section_update' pk=section.pk %}{% else %}{% url 'section_create' %}{% endif %}">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <input type="submit" value="Save">
+</form>
+{% endblock content %}

@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2>Ajouter un Niveau</h2>
+    <form method="post">
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="nom_niveau">Nom du Niveau</label>
+            <input type="text" name="nom_niveau" id="nom_niveau" class="form-control" required>
+        </div>
+        <div class="form-group">
+            <label for="annee_scolaire">Année Scolaire</label>
+            <select name="annee_scolaire" id="annee_scolaire" class="form-control" required>
+                {% for annee_scolaire in annee_scolaires %}
+                <option value="{{ annee_scolaire.id }}">{{ annee_scolaire }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <button type="submit" class="btn btn-primary">Ajouter</button>
+    </form>
+</div>
+{% endblock content %}

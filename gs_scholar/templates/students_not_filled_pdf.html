@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Students and Matiers Status</title>
+    {% load custom_filters %}
+    <!-- Add your CSS styles here for the PDF layout -->
+    <style>
+        /* Common styles for both screen and print */
+        body {
+            font-family: Arial, sans-serif;
+        }
+
+        h2 {
+            color: #333;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+
+        th,
+        td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        .badge {
+            padding: 5px 10px;
+            border-radius: 3px;
+            font-weight: bold;
+        }
+
+        .bg-success {
+            color: #fff;
+        }
+
+        .bg-danger {
+            color: #fff;
+        }
+
+        .bg-success-print {
+            background-color: #28a745;
+        }
+
+        .bg-danger-print {
+            background-color: #dc3545;
+        }
+
+        /* Styles specific to print */
+        @media print {
+            body {
+                background-color: #fff;
+            }
+
+            /* Hide elements not needed in print */
+            .no-print {
+                display: none;
+            }
+
+            div.table-responsive button.print-button {
+                display: inline-block;
+                padding: 8px 12px;
+                background-color: #007bff;
+                color: #fff;
+                border: none;
+                border-radius: 3px;
+                cursor: pointer;
+            }
+
+            .table .bg-success,
+            .table .bg-danger {
+                font-weight: bold;
+            }
+
+            /* Override the badge colors for print */
+            .table .bg-success-print {
+                background-color: #28a745;
+                color: #fff;
+            }
+
+            .table .bg-danger-print {
+                background-color: #dc3545;
+                color: #fff;
+            }
+        }
+    </style>
+
+</head>
+
+<body>
+
+    <h2>Students and Matiers Status</h2>
+
+    <div class="table-responsive">
+        <button class="print-button no-print" onclick="window.print()">Print</button>
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>Student</th>
+                    {% for matier in matiers_not_filled %}
+                    <th>{{ matier.name }}</th>
+                    {% endfor %}
+                </tr>
+            </thead>
+
+            <tbody>
+                {% for student in students_not_filled_questionnaire %}
+                <tr>
+                    <td>{{ student.nom_etudiant }}</td>
+                    {% for matier in matiers_not_filled %}
+                    <td>
+                        {% with key=student.pk|stringformat:"s"|add:"_"|add:matier.code %}
+                        {% if filled_status|get_value:key %}
+                        <span class="badge bg-success bg-success-print">Terminer</span>
+                        {% else %}
+                        <span class="badge bg-danger bg-danger-print">En attendant</span>
+                        {% endif %}
+                        {% endwith %}
+                    </td>
+                    {% endfor %}
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+</body>
+
+</html>

@@ -1,0 +1,53 @@
+{% extends 'index.html' %}
+{% block content %}
+<div class="container mt-4">
+  <h4>Add New Matier</h4>
+  {% if errors %}
+    <div class="alert alert-danger">
+      <ul>
+        {% for field, error_list in errors.items %}
+          <li><strong>{{ field }}:</strong> {{ error_list|join:", " }}</li>
+        {% endfor %}
+      </ul>
+    </div>
+  {% endif %}
+  <form method="post">
+    {% csrf_token %}
+    <div class="form-group">
+      <label for="id">ID:</label>
+      <input type="number" name="id" id="id" class="form-control" required>
+    </div>
+    <div class="form-group">
+      <label for="name">Name:</label>
+      <input type="text" name="name" id="name" class="form-control" required>
+    </div>
+    <div class="form-group">
+      <label for="code">Code Matier:</label>
+      <input type="text" name="code" id="code" class="form-control" required>
+    </div>
+    <div class="form-group">
+      <label for="semester">Semester:</label>
+      <select name="semester" id="semester" class="form-control" required>
+        <option value="">-- Select Semester --</option>
+        {% for sem in semestres %}
+          <option value="{{ sem.id }}">{{ sem.nom_semestre }} - {{ sem.niveau }}</option>
+        {% endfor %}
+      </select>
+    </div>
+    <div class="form-group">
+      <label for="specialite">Specialité:</label>
+      <select name="specialite" id="specialite" class="form-control">
+        <option value="">-- Select Specialité (if applicable) --</option>
+        {% for sp in specialites %}
+          <option value="{{ sp.id }}">{{ sp }}</option>
+        {% endfor %}
+      </select>
+    </div>
+    <div class="form-check">
+      <input type="checkbox" class="form-check-input" id="is_common" name="is_common">
+      <label class="form-check-label" for="is_common">Common Course (applies to all specialties)</label>
+    </div>
+    <button type="submit" class="btn btn-primary mt-3">Submit</button>
+  </form>
+</div>
+{% endblock content %}

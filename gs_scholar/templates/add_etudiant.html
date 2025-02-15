@@ -1,0 +1,55 @@
+{% extends 'index.html' %}
+{% block content %}
+<div class="container mt-4">
+  <h4>Add New Etudiant</h4>
+  {% if errors %}
+    <div class="alert alert-danger">
+      <ul>
+        {% for field, error_list in errors.items %}
+          <li><strong>{{ field }}:</strong> {{ error_list|join:", " }}</li>
+        {% endfor %}
+      </ul>
+    </div>
+  {% endif %}
+  <form method="post">
+    {% csrf_token %}
+    <div class="form-group">
+      <label for="Matricul">Matricul:</label>
+      <input type="number" name="Matricul" id="Matricul" class="form-control" required>
+    </div>
+    <div class="form-group">
+      <label for="nom_etudiant">Nom & Prenom:</label>
+      <input type="text" name="nom_etudiant" id="nom_etudiant" class="form-control" required>
+    </div>
+    <div class="form-group">
+      <label for="email">Email:</label>
+      <input type="email" name="email" id="email" class="form-control" required>
+    </div>
+    <div class="form-group">
+      <label for="sexe">Sexe:</label>
+      <input type="text" name="sexe" id="sexe" class="form-control" required>
+    </div>
+    <div class="form-group">
+      <label for="specialite">Specialité:</label>
+      <select name="specialite" id="specialite" class="form-control">
+        <option value="">-- Select Specialité (for L2/L3 only) --</option>
+        {% for sp in specialites %}
+          <option value="{{ sp.id }}">{{ sp }}</option>
+        {% endfor %}
+      </select>
+    </div>
+    <div class="form-group">
+      <label for="niveau">Niveau:</label>
+      <select name="niveau" id="niveau" class="form-control" required>
+        <option value="">-- Select Niveau --</option>
+        {% for n in niveaux %}
+          <option value="{{ n.pk }}">{{ n.nom_niveau }}-{{n.specialite.code}}</option>
+        {% endfor %}
+      </select>
+    </div>
+    <!-- If you plan to auto-create a user later, you can leave the user field hidden -->
+    <input type="hidden" name="user">
+    <button type="submit" class="btn btn-primary mt-3">Submit</button>
+  </form>
+</div>
+{% endblock content %}

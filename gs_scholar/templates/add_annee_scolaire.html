@@ -1,0 +1,26 @@
+<!-- templates/add_annee_scolaire.html -->
+
+{% extends 'index.html' %}
+
+{% block content %}
+
+<div class="container mt-4">
+    <h2>Ajouter une Année Scolaire</h2>
+
+    <form method="post">
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="year">annee_scolaire</label>
+            <input type="text" name="annee" id="year" class="form-control" required>
+        </div>
+        <div class="form-group">
+            <label for="year">En cours</label>
+            <input type="checkbox" name="current" id="year" class="form-check-input" required checked>
+        </div>
+        <button type="submit" class="btn btn-primary">Ajouter</button>
+    </form>
+
+
+</div>
+{% endblock content %}
+<!-- Ajoutez les liens vers les fichiers JavaScript de Bootstrap si vous les utilisez -->

@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ questionnaire.name }}</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #6C63FF;
+            --secondary-color: #4CAF50;
+            --bg-color: #f5f7ff;
+            --text-color: #2c3e50;
+            --card-bg: #ffffff;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            transition: all 0.3s ease;
+        }
+
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+
+        .questionnaire-header {
+            background: linear-gradient(135deg, var(--primary-color), #8E2DE2);
+            padding: 2rem;
+            border-radius: 20px;
+            margin-bottom: 2rem;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+            animation: slideDown 0.5s ease-out;
+              display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column; /* Stack items vertically */
+    /* Add padding, margins, background, etc. as needed */
+    padding: 20px;
+
+    border-bottom: 1px solid #ccc;
+        }
+
+        .questionnaire-header h1 {
+            color: white;
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            animation: fadeIn 0.8s ease-out;
+        }
+
+        .questionnaire-header p {
+            color: rgba(255,255,255,0.9);
+            font-size: 1.1rem;
+        }
+
+        .section-card {
+            background: var(--card-bg);
+            border-radius: 15px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            transform: translateY(20px);
+            opacity: 0;
+            animation: slideUp 0.5s ease-out forwards;
+        }
+
+        .section-card h2 {
+            color: var(--primary-color);
+            margin-bottom: 1.5rem;
+            font-size: 1.8rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .question {
+            margin-bottom: 2rem;
+            opacity: 0;
+            animation: fadeIn 0.5s ease-out forwards;
+            animation-delay: 0.3s;
+        }
+
+        .question p {
+            font-size: 1.1rem;
+            color: var(--text-color);
+            margin-bottom: 1rem;
+        }
+
+        .radio-group {
+            display: grid;
+            gap: 0.8rem;
+        }
+
+        .radio-option {
+            position: relative;
+            padding: 1rem;
+            background: #f8f9fa;
+            border: 2px solid #e9ecef;
+            border-radius: 10px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            transition: all 0.3s ease;
+        }
+
+        .radio-option:hover {
+            transform: translateX(5px);
+            background: #f0f2f5;
+        }
+
+        .radio-option input[type="radio"] {
+            position: absolute;
+            opacity: 0;
+        }
+
+        .radio-option label {
+            padding-left: 2.5rem;
+            cursor: pointer;
+            font-weight: 500;
+            width: 100%;
+        }
+
+        .radio-option label:before {
+            content: '';
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 20px;
+            height: 20px;
+            border: 2px solid var(--primary-color);
+            border-radius: 50%;
+            transition: all 0.3s ease;
+        }
+
+        .radio-option input[type="radio"]:checked + label:before {
+            background: var(--primary-color);
+            box-shadow: inset 0 0 0 4px white;
+        }
+
+        textarea.form-control {
+            width: 100%;
+            padding: 1rem;
+            border: 2px solid #e9ecef;
+            border-radius: 10px;
+            resize: vertical;
+            min-height: 100px;
+            font-family: inherit;
+            margin-top: 0.5rem;
+        }
+
+        textarea.form-control:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(108, 99, 255, 0.1);
+        }
+
+        .submit-btn {
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            display: block;
+            margin: 2rem auto;
+            transition: all 0.3s ease;
+            animation: pulse 2s infinite;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(108, 99, 255, 0.3);
+        }
+
+        @keyframes slideDown {
+            from {
+                transform: translateY(-50px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes slideUp {
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes fadeIn {
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes pulse {
+            0% {
+                box-shadow: 0 0 0 0 rgba(108, 99, 255, 0.4);
+            }
+            70% {
+                box-shadow: 0 0 0 10px rgba(108, 99, 255, 0);
+            }
+            100% {
+                box-shadow: 0 0 0 0 rgba(108, 99, 255, 0);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                margin: 1rem auto;
+            }
+
+            .questionnaire-header {
+                padding: 1.5rem;
+            }
+
+            .questionnaire-header h1 {
+                font-size: 2rem;
+            }
+
+            .section-card {
+                padding: 1.5rem;
+            }
+
+            .radio-option {
+                padding: 0.8rem;
+            }
+        }
+
+        .progress-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: rgba(108, 99, 255, 0.1);
+            z-index: 1000;
+        }
+
+        .progress-bar__fill {
+            height: 100%;
+            background: var(--primary-color);
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        .floating-info {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            background: white;
+            padding: 1rem;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            animation: slideInRight 0.5s ease-out;
+        }
+
+        @keyframes slideInRight {
+            from {
+                transform: translateX(100px);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="progress-bar">
+        <div class="progress-bar__fill"></div>
+    </div>
+
+    <div class="container">
+        <div class="questionnaire-header">
+            <h1>{{ questionnaire.name }}</h1>
+            <p>Feedback for {{ matiere.code }}</p>
+        </div>
+
+        <form method="post" onsubmit="return validateForm()" id="questionnaireForm">
+            {% csrf_token %}
+            
+            {% for section in questionnaire.sections.all %}
+            <div class="section-card">
+                <h2><i class="fas fa-clipboard-list"></i> {{ section.name }}</h2>
+                
+                {% for question in section.questions.all %}
+                <div class="question">
+                    <p><i class="fas fa-question-circle"></i> {{ question.text }}</p>
+                    
+                    {% if question.question_type == 'radio' %}
+                    <div class="radio-group">
+                        {% with choices=question.get_choices %}
+                        {% for choice in choices %}
+                        <div class="radio-option">
+                            <input type="radio" 
+                                   name="question_{{ question.id }}" 
+                                   id="choice_{{ question.id }}_{{ forloop.counter }}"
+                                   value="{{ choice }}" 
+                                   required>
+                            <label for="choice_{{ question.id }}_{{ forloop.counter }}">
+                                {{ choice }}
+                            </label>
+                        </div>
+                        {% endfor %}
+                        {% endwith %}
+                    </div>
+                    {% elif question.question_type == 'input' %}
+                    <textarea class="form-control" 
+                              name="question_{{ question.id }}" 
+                              id="input_{{ question.id }}"
+                              placeholder="Enter your response here..."
+                              required></textarea>
+                    {% endif %}
+                </div>
+                {% endfor %}
+            </div>
+            {% endfor %}
+
+            <button type="submit" class="submit-btn">
+                <i class="fas fa-paper-plane"></i> Submit Feedback
+            </button>
+        </form>
+    </div>
+
+    <div class="floating-info">
+        <i class="fas fa-user"></i>
+        <span>{{ request.user.email }}</span>
+    </div>
+
+    <script>
+        // Progress bar functionality
+        function updateProgress() {
+            const form = document.getElementById('questionnaireForm');
+            const totalInputs = form.querySelectorAll('input[required], textarea[required]').length;
+            const filledInputs = form.querySelectorAll('input[required]:valid, textarea[required]:valid').length;
+            const progress = (filledInputs / totalInputs) * 100;
+            document.querySelector('.progress-bar__fill').style.width = `${progress}%`;
+        }
+
+        // Intersection Observer for smooth animations
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, { threshold: 0.1 });
+
+        document.querySelectorAll('.section-card').forEach(card => {
+            observer.observe(card);
+        });
+
+        // Form validation with animation
+        function validateForm() {
+            const textareas = document.getElementsByClassName("form-control");
+            let isValid = true;
+
+            for (let textarea of textareas) {
+                if (textarea.value.trim() === "") {
+                    textarea.classList.add('animate__animated', 'animate__shakeX');
+                    setTimeout(() => {
+                        textarea.classList.remove('animate__animated', 'animate__shakeX');
+                    }, 1000);
+                    isValid = false;
+                }
+
+                if (!customValidation(textarea.value)) {
+                    textarea.classList.add('animate__animated', 'animate__shakeX');
+                    setTimeout(() => {
+                        textarea.classList.remove('animate__animated', 'animate__shakeX');
+                    }, 1000);
+                    isValid = false;
+                }
+            }
+
+            if (!isValid) {
+                alert("Please provide valid responses for all questions.");
+                return false;
+            }
+
+            return true;
+        }
+
+        function customValidation(comment) {
+            const words = comment.split(/\s+/);
+            const meaningfulWordsCount = words.filter(word => word.length > 1).length;
+            const repeatedCharsRegex = /(.)\1{2,}/;
+            return meaningfulWordsCount >= 3 && !repeatedCharsRegex.test(comment);
+        }
+
+        // Event listeners
+        document.addEventListener('DOMContentLoaded', updateProgress);
+        document.querySelectorAll('input, textarea').forEach(input => {
+            input.addEventListener('change', updateProgress);
+        });
+
+        // Smooth scroll to invalid fields
+        document.querySelector('form').addEventListener('invalid', (e) => {
+            e.preventDefault();
+            const firstInvalid = document.querySelector(':invalid');
+            firstInvalid.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }, true);
+    </script>
+</body>
+</html>

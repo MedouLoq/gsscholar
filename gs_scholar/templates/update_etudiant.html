@@ -1,0 +1,67 @@
+{% extends 'index.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container  p-4 mt-4">
+  <h4>Update Etudiant</h4>
+  
+  {% if errors %}
+    <div class="alert alert-danger">
+      <ul>
+        {% for field, error_list in errors.items %}
+          <li><strong>{{ field }}:</strong> {{ error_list|join:", " }}</li>
+        {% endfor %}
+      </ul>
+    </div>
+  {% endif %}
+  
+  <form method="post">
+    {% csrf_token %}
+    <div class="form-group">
+      <label for="Matricul">Matricul:</label>
+      <input type="number" name="Matricul" id="Matricul" class="form-control" required value="{{ etudiant.Matricul }}">
+    </div>
+    
+    <div class="form-group">
+      <label for="nom_etudiant">Nom & Prénom:</label>
+      <input type="text" name="nom_etudiant" id="nom_etudiant" class="form-control" required value="{{ etudiant.nom_etudiant }}">
+    </div>
+    
+    <div class="form-group">
+      <label for="email">Email:</label>
+      <input type="email" name="email" id="email" class="form-control" required value="{{ etudiant.email }}">
+    </div>
+    
+    <div class="form-group">
+      <label for="sexe">Sexe:</label>
+      <input type="text" name="sexe" id="sexe" class="form-control" required value="{{ etudiant.sexe }}">
+    </div>
+    
+    <div class="form-group">
+      <label for="specialite">Specialité:</label>
+      <select name="specialite" id="specialite" class="form-control">
+        <option value="">-- Select Specialité (for L2/L3 only) --</option>
+        {% for sp in specialites %}
+          <option value="{{ sp.id }}" {% if etudiant.specialite and etudiant.specialite.id == sp.id %}selected{% endif %}>
+            {{ sp }}
+          </option>
+        {% endfor %}
+      </select>
+    </div>
+    
+    <div class="form-group">
+      <label for="niveau">Niveau:</label>
+      <select name="niveau" id="niveau" class="form-control" required>
+        <option value="">-- Select Niveau --</option>
+        {% for n in niveaux %}
+          <option value="{{ n.pk }}" {% if etudiant.niveau and etudiant.niveau.pk == n.pk %}selected{% endif %}>
+            {{ n.nom_niveau }}--{{ n.specialite.code }}
+          </option>
+        {% endfor %}
+      </select>
+    </div>
+    
+    <button type="submit" class="btn btn-primary mt-3">Update</button>
+  </form>
+</div>
+{% endblock content %}

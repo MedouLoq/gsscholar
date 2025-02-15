@@ -1,0 +1,50 @@
+{% extends "index.html" %}
+{% block content %}
+
+<div class="container">
+    <h1 class="mt-5 mb-4"> Suivi des étudiants</h1>
+
+    {% for semester in semester_list %}
+    <div class="card mb-3">
+        <div class="card-body">
+            <h5 class="card-title">
+                <a href="{% url 'questionnaire_list' semester.id %}">
+                    {{ semester.nom_semestre }}
+                </a>
+            </h5>
+             <a class="btn btn-outline-success " style="float: right !important;" href="{% url 'DownloadAllRadarChartsView' semester.id %}">Download</a>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+
+        var myDiv = document.getElementById('1');
+        var myDiv2 = document.getElementById('2');
+        var myLi = document.getElementById('10');
+        var myLi2 = document.getElementById('11');
+        var myloq = document.getElementById('20');
+        var myloq2 = document.getElementById('21');
+        var mybabe = document.getElementById('30');
+        var mybabe2 = document.getElementById('31');
+
+        if (myDiv.classList.contains('active')) {
+
+            myDiv.classList.remove('active');
+            myLi.classList.remove('active');
+            myloq.classList.remove('subdrop');
+            myloq.classList.remove('active');
+            mybabe.removeAttribute('style');
+
+
+            myDiv2.classList.add('active');
+            myLi2.classList.add('active');
+            myloq2.classList.add('subdrop');
+            myloq2.classList.add('active');
+            mybabe2.style.display = 'block';
+
+        }
+    });
+</script>
+{% endblock %}

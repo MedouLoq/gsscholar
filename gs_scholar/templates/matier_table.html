@@ -1,0 +1,55 @@
+{% extends 'index.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container" style="background-color: rgb(253, 254, 255);" id="">
+    <h4>Matier Table</h4>
+    <span><a href="{% url 'add_matier' %}" class="btn btn-success mb-3">Ajouter un Matier</a>
+        <a href="/import_matiere" class="btn btn-info mb-3">
+            <i class="fas fa-file-excel"></i> Import Matiers
+        </a></span><br> <br>
+    <div class="table-responsive ">
+        <table id="fh" class="table table-striped table-bordered" width="100%">
+            <thead>
+                <tr>
+                    <th>semester</th>
+                    <th>nom</th>
+                    <th>code</th>
+
+
+                    <th>Edit</th>
+                    <th>Delete</th>
+
+                </tr>
+            </thead>
+            <tbody>
+                {% for matier in matiers %}
+                <tr>
+                    <td>{{ matier.semester.nom_semestre }}</td>
+                    <td>{{ matier.name }}</td>
+                    <td>{{ matier.code }}</td>
+
+
+
+
+                    <td>
+
+                        <a href="/update_matier/{{ matier.id }}" class="btn btn-primary btn-xs">
+                            Modifier
+                        </a>
+
+                    </td>
+                    <td>
+
+                        <a href="/delete_matier/{{ matier.id }}" class="btn btn-danger btn-xs">
+                            Supprimer
+                        </a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+</div>
+{% endblock content %}

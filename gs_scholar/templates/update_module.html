@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container" id="fh">
+    <h4>Add New Student</h4>
+    <form method="post">
+        {% csrf_token %}
+        <div class="form-group">
+        <label for="year">Id:</label>
+        <input class="form-control" type="number" name="id" id="year" value="{{ module.id }}" required> 
+      </div>
+        <div class="form-group">
+        <label for="year">Numero:</label>
+        <input class="form-control" type="number" name="numero" id="year" value="{{ module.numero }}" required> 
+      </div>
+        <div class="form-group">
+        <label for="year">module_name:</label>
+        <input class="form-control" type="text" name="module_name" id="year" value="{{ module.module_name }}" required> 
+      </div>
+        <button class="btn btn-primary" type="submit">Update</button>
+      </form>
+      
+      
+</div>
+{% endblock content %}

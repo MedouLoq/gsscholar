@@ -1,0 +1,39 @@
+{% extends 'index.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container mt-4">
+    <h4>Tableau des Niveaux</h4>
+    <a href="{% url 'add_niveau' %}" class="btn btn-primary mb-3">Ajouter un Niveau</a>
+    <div class="table-responsive">
+        <table class="table table-striped table-bordered" width="100%">
+            <thead>
+                <tr>
+                    <th>Nom du Niveau</th>
+                    <th>Année Scolaire</th>
+                    <th>Editer</th>
+                    <th>Supprimer</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for niveau in Niveau %}
+                <tr>
+                    <td>{{ niveau.nom_niveau }}</td>
+                    <td>{{ niveau.annee_scolaire }}</td>
+                    <td>
+                        <a href="{% url 'update_niveau' n.id %}" class="btn btn-primary btn-xs">
+                            Modifier
+                        </a>
+                    </td>
+                    <td>
+                        <a href="{% url 'delete_niveau' n.id %}" class="btn btn-danger btn-sm">
+                            Supprimer
+                        </a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock content %}

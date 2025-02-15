@@ -1,0 +1,14 @@
+{% extends "index.html" %}
+{% block content %}
+    <div class="container mt-4">
+        <h1>Import Matiere</h1>
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="form-group">
+                {{ form.excel_file.label_tag }}
+                {{ form.excel_file }}
+            </div>
+            <button type="submit" class="btn btn-primary">Import Matiere</button>
+        </form>
+    </div>
+{% endblock %}
